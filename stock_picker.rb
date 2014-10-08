@@ -12,6 +12,9 @@ def stock_picker stocks
 	stocks.each_with_index do |buy, i|
 		stocks_copy.each_with_index do |sell, j|
 			if (j > i)
+			#if (j < i)
+			#	next
+			#end
 				if sell - buy > max_profit
 					max_profit = sell - buy 
 					best[0] = i
