@@ -1,5 +1,5 @@
 # Build a method #bubble_sort that takes an array and returns a sorted array.
-# It must use the bubble sort methodology
+# It uses the bubble sort methodology
 def sorted? arr
 	0.upto(arr.length-2) do |i|
 		return false if arr[i] > arr[i+1]

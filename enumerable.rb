@@ -1,3 +1,5 @@
+#built my own version of some of the methods from the Enumerable module 
+
 module Enumerable
 	def my_each
 		return self.to_enum unless block_given?
@@ -50,9 +52,10 @@ module Enumerable
 		return false
 	end
 
-	def my_none?(&my_proc)
+
+	def my_none?
 		return !(self.my_any?) unless block_given?
-		return !(self.my_any? my_proc.call)
+		return !(self.my_any? {|i| yield(i)})
 	end
 
 	def my_count(n=nil)
@@ -65,6 +68,7 @@ module Enumerable
 		end
 	end
 
+	#takes either a block or a proc
 	def my_map(&my_proc)
 		return self.to_enum unless block_given?
 		arr = []
@@ -84,24 +88,25 @@ module Enumerable
 
 end
 
-#testing my_inject
+#a few test 
 def multiply_els(list)
   list.my_inject(1) { |product, n| product * n }
 end
 
 puts multiply_els((5..10).to_a) #=> 151200
 
-longest = %w{ cat sheep bear }.inject do |memo, word|
+longest = %w{ cat sheep bear }.my_inject('') do |memo, word|
    memo.length > word.length ? memo : word
 end
 p longest                                        #=> "sheep"
 
 #testing my_map
 
-p [1, 2, 3, 4].my_map {|i| i + 2}               #=> [3, 4, 5, 6]
-
-my_proc = Proc.new {|i| i + 2}
-p [1, 2, 3, 4].my_map &my_proc               #=> [3, 4, 5, 6]
+p %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
+p %w{ant bear cat}.none? { |word| word.length >= 4 } #=> false
+p [].none?                                           #=> true
+p [nil].none?                                        #=> true
+p [nil, false].none?                                 #=> true
 
 
 
